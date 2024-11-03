@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Provider from "./provider";
+import Link from "next/link";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,8 +30,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased p-5`}
       >
-        <div className="text-3xl uppercase font-bold bg-slate-600 p-2 rounded-xl overflow-hidden text-white">
-          <div className="pl-3">Json CRUD</div>
+        <div className="px-2 py-3 text-3xl uppercase font-bold bg-slate-600 rounded-xl overflow-hidden text-white">
+          <Link
+            href={"/"}
+            className="border-2 px-2 py-1 border-white rounded-xl"
+          >
+            Json CRUD
+          </Link>
         </div>
 
         <Provider>{children}</Provider>
