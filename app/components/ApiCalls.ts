@@ -71,3 +71,16 @@ export const updateData = async (data: {
   }
   return res;
 };
+
+export const deleteData = async (id: number) => {
+  let res = {};
+
+  try {
+    res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+      method: "DELETE",
+    }).then((response) => response.json());
+  } catch (error) {
+    console.log(error);
+  }
+  return res;
+};

@@ -12,7 +12,7 @@ import {
 } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { IoWarningOutline } from "react-icons/io5";
-import { fetchData } from "./ApiCalls";
+import { deleteData, fetchData } from "./ApiCalls";
 import PageTitle from "./PageTitle";
 import PostCard from "./PostCard";
 
@@ -32,11 +32,22 @@ export default function ViewData({}: Props) {
   const [allPostData, setAllPostData] = useState<Post[] | null>(null);
   const [showToaster, setShowToaster] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<number>(-1);
 
   const fetchAllPosts = async () => {
     const data = await fetchData();
     console.log({ data });
     setAllPostData(data);
+  };
+
+  const handleDelete = async () => {
+    const deleteRes = await deleteData(deleteId);
+    console.log({ deleteRes });
+    if (!!deleteRes) {
+      setShowToaster(true);
+      fetchAllPosts();
+      setOpen(false);
+    }
   };
 
   useEffect(() => {
@@ -55,7 +66,10 @@ export default function ViewData({}: Props) {
             title={post?.title}
             description={post?.body}
             id={post?.id}
-            onDeleteBtnClick={() => setOpen(true)}
+            onDeleteBtnClick={() => {
+              setDeleteId(post?.id);
+              setOpen(true);
+            }}
             onEditSuccess={() => {
               fetchAllPosts();
               setShowToaster(true);
@@ -101,7 +115,7 @@ export default function ViewData({}: Props) {
               <Button
                 variant="solid"
                 color="danger"
-                onClick={() => setOpen(false)}
+                onClick={() => handleDelete()}
               >
                 Delete
               </Button>
